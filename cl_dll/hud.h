@@ -127,10 +127,11 @@ public:
 	void UserCmd_NextWeapon();
 	void UserCmd_PrevWeapon();
 
+	WEAPON *m_pWeapon; // suXin: previously private, want to know the current weapon from WeaponsResource class
+
 private:
 	float m_fFade;
 	RGBA m_rgba;
-	WEAPON* m_pWeapon;
 	int m_HUD_bucket0;
 	int m_HUD_selection;
 };
