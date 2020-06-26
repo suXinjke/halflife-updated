@@ -61,6 +61,7 @@ cvar_t* cl_yawspeed;
 cvar_t* cl_pitchspeed;
 cvar_t* cl_anglespeedkey;
 cvar_t* cl_vsmoothing;
+cvar_t* sv_bunnyhop_cap;
 /*
 ===============================================================================
 
@@ -989,6 +990,7 @@ void InitInput()
 	m_forward = gEngfuncs.pfnRegisterVariable("m_forward", "1", FCVAR_ARCHIVE);
 	m_side = gEngfuncs.pfnRegisterVariable("m_side", "0.8", FCVAR_ARCHIVE);
 
+	sv_bunnyhop_cap = gEngfuncs.pfnRegisterVariable("sv_bunnyhop_cap", "1", FCVAR_SERVER | FCVAR_ARCHIVE);
 	// Initialize third person camera controls.
 	CAM_Init();
 	// Initialize inputs

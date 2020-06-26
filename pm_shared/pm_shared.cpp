@@ -29,6 +29,10 @@
 #include <stdlib.h> // atoi
 #include <ctype.h>	// isspace
 
+#ifndef CLIENT_DLL
+#include "eiface.h"
+extern enginefuncs_t g_engfuncs;
+#endif
 #ifdef CLIENT_DLL
 // Spectator Mode
 bool iJumpSpectator;
@@ -2487,6 +2491,15 @@ void PM_NoClip()
 	VectorClear(pmove->velocity);
 }
 
+bool PM_MegaBunnyJumpingAllowed(void)
+{
+#ifdef CLIENT_DLL
+	return false;
+#else
+	return g_engfuncs.pfnCVarGetFloat("sv_bunnyhop_cap") < 1.0f;
+#endif
+}
+
 // Only allow bunny jumping up to 1.7x server / player maxspeed setting
 #define BUNNYJUMP_MAX_SPEED_FACTOR 1.7f
 
@@ -2498,6 +2511,11 @@ void PM_NoClip()
 //-----------------------------------------------------------------------------
 void PM_PreventMegaBunnyJumping()
 {
+	if (PM_MegaBunnyJumpingAllowed())
+	{
+		return;
+	}
+
 	// Current player speed
 	float spd;
 	// If we have to crop, apply this cropping fraction to velocity
