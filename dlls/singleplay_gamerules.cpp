@@ -70,6 +70,11 @@ bool CHalfLifeRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* 
 		return true;
 	}
 
+	if (CVAR_GET_FLOAT("cl_autowepswitch") == 0.0f)
+	{
+		return false;
+	}
+
 	if (!pPlayer->m_pActiveItem->CanHolster())
 	{
 		return false;
