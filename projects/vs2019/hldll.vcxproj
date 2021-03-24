@@ -42,15 +42,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>C:\Program Files (x86)\Steam\steamapps\common\Half-Life\halflife_updated\dlls\</OutDir>
-    <IntDir>$(Configuration)\$(ProjectName)\int\</IntDir>
+    <OutDir>$(HALF_LIFE_MOD_DIR)\dlls\</OutDir>
+    <IntDir>$(HALF_LIFE_MOD_DIR)\dlls\int\</IntDir>
     <TargetName>hl</TargetName>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Program Files (x86)\Steam\steamapps\common\Half-Life\halflife_updated\dlls\</OutDir>
-    <IntDir>$(Configuration)\$(ProjectName)\int\</IntDir>
+    <OutDir>$(HALF_LIFE_MOD_DIR)\dlls\</OutDir>
+    <IntDir>$(HALF_LIFE_MOD_DIR)\dlls\int\</IntDir>
     <TargetName>hl</TargetName>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
