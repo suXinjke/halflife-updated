@@ -991,6 +991,9 @@ void InitInput()
 	m_side = gEngfuncs.pfnRegisterVariable("m_side", "0.8", FCVAR_ARCHIVE);
 
 	sv_bunnyhop_cap = gEngfuncs.pfnRegisterVariable("sv_bunnyhop_cap", "1", FCVAR_SERVER | FCVAR_ARCHIVE);
+    gEngfuncs.pfnRegisterVariable( "cl_showmap", "1", FCVAR_SERVER | FCVAR_ARCHIVE );
+
+
 	// Initialize third person camera controls.
 	CAM_Init();
 	// Initialize inputs

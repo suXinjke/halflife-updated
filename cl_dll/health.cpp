@@ -165,11 +165,20 @@ void CHudHealth::GetPainColor(int& r, int& g, int& b)
 #endif
 }
 
+#include <regex>
+
 bool CHudHealth::Draw(float flTime)
 {
 	int r, g, b;
 	int a = 0, x, y;
 	int HealthWidth;
+
+	if ( gEngfuncs.pfnGetCvarFloat( "cl_showmap" ) > 0.0f ) {
+		std::string string( gEngfuncs.pfnGetLevelName() );
+		string = std::regex_replace( string, std::regex( "((maps\\/)|.bsp$)" ), "" );
+
+		gEngfuncs.pfnDrawConsoleString( 20, ScreenHeight - 70, ( char * ) string.c_str() );
+	}
 
 	if ((gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) != 0 || 0 != gEngfuncs.IsSpectateOnly())
 		return true;
