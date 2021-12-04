@@ -461,6 +461,20 @@ void GameDLLInit()
 	g_psv_aim = CVAR_GET_POINTER("sv_aim");
 	g_footsteps = CVAR_GET_POINTER("mp_footsteps");
 	g_psv_cheats = CVAR_GET_POINTER("sv_cheats");
+	g_fps_max = CVAR_GET_POINTER("fps_max");
+
+	// sys_timescale was always here, just 36 bytes back
+	// Thanks a lot to SoloKiller for hinting towards sys_timescale existence and locating it in memory
+	// https://github.com/ValveSoftware/halflife/issues/1749
+	if (memcmp((char*)g_fps_max - 0x38, "sys_timescale", 14) == 0)
+	{
+		g_sys_timescale = (cvar_t*)((char*)g_fps_max - 36);
+		CVAR_REGISTER(g_sys_timescale);
+	}
+	else
+	{
+		g_engfuncs.pfnServerPrint("Failed to register sys_timescale cvar\n");
+	}
 
 	if (!FileSystem_LoadFileSystem())
 	{
