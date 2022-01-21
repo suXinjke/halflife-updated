@@ -212,6 +212,12 @@ public:
 	//	void Think() override;
 	virtual void Jump();
 	virtual void Duck();
+
+	int m_iAlphaLadderFrame;	  // current climbing frame
+	float m_iAlphaLadderSpeed;	  // current climbing speed ( gets applied to pev->velocity.z )
+	int m_bAlphaLadderPunchSwap; // see if we should viewpunch left or right?
+	void AlphaLadderBob(float bobAmount);
+
 	virtual void PreThink();
 	virtual void PostThink();
 	Vector GetGunPosition() override;

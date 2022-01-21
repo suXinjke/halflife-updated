@@ -1748,6 +1748,60 @@ void CBasePlayer::UpdateStatusBar()
 #define CLIMB_PUNCH_X -7		 // how far to 'punch' client X axis when climbing
 #define CLIMB_PUNCH_Z 7			 // how far to 'punch' client Z axis when climbing
 
+extern bool g_onladder;
+
+void CBasePlayer::AlphaLadderBob(float bobAmount)
+{
+	if (!g_onladder)
+	{
+		return;
+	}
+
+	if (!pev->velocity.Length())
+	{
+		return;
+	}
+
+	m_iAlphaLadderFrame++;
+	if (m_iAlphaLadderFrame >= CLIMB_SHAKE_FREQUENCY)
+	{
+		m_iAlphaLadderFrame = 0.0;
+		m_iAlphaLadderSpeed = MAX_CLIMB_SPEED;
+
+		int randomSound = RANDOM_LONG(0, 3);
+
+		switch (randomSound)
+		{
+		case 0:
+			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob1.wav", VOL_NORM, ATTN_NORM);
+			break;
+		case 1:
+			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob2.wav", VOL_NORM, ATTN_NORM);
+			break;
+		case 2:
+			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob3.wav", VOL_NORM, ATTN_NORM);
+			break;
+		case 3:
+		default:
+			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob4.wav", VOL_NORM, ATTN_NORM);
+			break;
+		}
+
+		if (m_bAlphaLadderPunchSwap)
+		{
+			pev->punchangle.z = bobAmount;
+			pev->punchangle.x = -bobAmount;
+			m_bAlphaLadderPunchSwap = 0;
+		}
+		else
+		{
+			pev->punchangle.z = -bobAmount;
+			pev->punchangle.x = bobAmount;
+			m_bAlphaLadderPunchSwap = 1;
+		}
+	}
+}
+
 void CBasePlayer::PreThink()
 {
 	int buttonsChanged = (m_afButtonLast ^ pev->button); // These buttons have changed this frame
@@ -1821,6 +1875,13 @@ void CBasePlayer::PreThink()
 	{
 		PlayerDeathThink();
 		return;
+	}
+
+
+	auto cl_ladderbob = CVAR_GET_FLOAT("cl_ladderbob");
+	if (cl_ladderbob > 0.0f)
+	{
+		AlphaLadderBob(cl_ladderbob);
 	}
 
 	// So the correct flags get sent to client asap.
@@ -2859,6 +2920,10 @@ void CBasePlayer::Spawn()
 	m_lastx = m_lasty = 0;
 
 	m_flNextChatTime = gpGlobals->time;
+
+	m_iAlphaLadderFrame = 0;
+	m_iAlphaLadderSpeed = 0.0f;
+	m_bAlphaLadderPunchSwap = 0;
 
 	secretScientistSpawned = 0;
 

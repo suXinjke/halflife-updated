@@ -487,22 +487,29 @@ void PM_PlayStepSound(int step, float fvol)
 		}
 		break;
 	case STEP_LADDER:
-		switch (irand)
+#ifdef CLIENT_DLL
+		if (true)
+#else
+		if (g_engfuncs.pfnCVarGetFloat("cl_ladderbob") == 0)
+#endif
 		{
-		// right foot
-		case 0:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 1:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		// left foot
-		case 2:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 3:
-			pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
-			break;
+			switch (irand)
+			{
+			// right foot
+			case 0:
+				pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder1.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 1:
+				pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder3.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			// left foot
+			case 2:
+				pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder2.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 3:
+				pmove->PM_PlaySound(CHAN_BODY, "player/pl_ladder4.wav", fvol, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			}
 		}
 		break;
 	}
