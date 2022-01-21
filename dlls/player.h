@@ -183,6 +183,8 @@ public:
 	CBasePlayerItem* m_pClientActiveItem; // client version of the active item
 	CBasePlayerItem* m_pLastItem;
 
+	int secretScientistSpawned;
+
 	std::uint64_t m_WeaponBits;
 
 	//Not saved, used to update client.

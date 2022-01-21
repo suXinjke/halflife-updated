@@ -109,6 +109,8 @@ TYPEDESCRIPTION CBasePlayer::m_playerSaveData[] =
 		DEFINE_FIELD(CBasePlayer, m_hViewEntity, FIELD_EHANDLE),
 		DEFINE_FIELD(CBasePlayer, m_iHideHUD, FIELD_INTEGER),
 		DEFINE_FIELD(CBasePlayer, m_iFOV, FIELD_INTEGER),
+		
+		DEFINE_FIELD(CBasePlayer, secretScientistSpawned, FIELD_INTEGER),
 
 		//DEFINE_FIELD( CBasePlayer, m_fDeadTime, FIELD_FLOAT ), // only used in multiplayer games
 		//DEFINE_FIELD( CBasePlayer, m_fGameHUDInitialized, FIELD_INTEGER ), // only used in multiplayer games
@@ -2858,6 +2860,8 @@ void CBasePlayer::Spawn()
 
 	m_flNextChatTime = gpGlobals->time;
 
+	secretScientistSpawned = 0;
+
 	g_pGameRules->PlayerSpawn(this);
 }
 
@@ -2972,6 +2976,14 @@ bool CBasePlayer::Restore(CRestore& restore)
 	m_bResetViewEntity = true;
 
 	m_bRestored = true;
+
+	// c2a1 at: -962 x, -112 y, 176 z
+	auto mapName = STRING(gpGlobals->mapname);
+	if (FStrEq(mapName, "c2a1") && secretScientistSpawned == 0)
+	{
+		auto scientist = CBaseEntity::Create("monster_scientist", Vector(-1010, -100, 96), Vector(0, 90, 0));
+		secretScientistSpawned = 1;
+	}
 
 	return status;
 }
