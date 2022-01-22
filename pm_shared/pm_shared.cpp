@@ -38,6 +38,7 @@ extern enginefuncs_t g_engfuncs;
 bool iJumpSpectator;
 float vJumpOrigin[3];
 float vJumpAngles[3];
+#include "cl_dll.h"
 #endif
 
 static int pm_shared_initialized = 0;
@@ -488,10 +489,14 @@ void PM_PlayStepSound(int step, float fvol)
 		break;
 	case STEP_LADDER:
 #ifdef CLIENT_DLL
-		if (true)
+		float cl_ladderbob = gEngfuncs.pfnGetCvarFloat("cl_ladderbob");
 #else
-		if (g_engfuncs.pfnCVarGetFloat("cl_ladderbob") == 0)
+		float cl_ladderbob = g_engfuncs.pfnCVarGetFloat("cl_ladderbob");
 #endif
+		if (
+			cl_ladderbob == 0 ||
+			(cl_ladderbob > 0 && pmove->velocity.z < 0)
+		)
 		{
 			switch (irand)
 			{
