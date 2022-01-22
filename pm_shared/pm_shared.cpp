@@ -2178,13 +2178,19 @@ void PM_LadderMove(physent_t* pLadder)
 			flSpeed *= PLAYER_DUCKING_MULTIPLIER;
 		}
 
+#ifdef CLIENT_DLL
+		float climbingUpSpeed = MAX_CLIMB_SPEED;
+#else
+		float climbingUpSpeed = g_engfuncs.pfnCVarGetFloat("sv_ladder_climb_speed");
+#endif
+
 		if ((pmove->cmd.buttons & IN_BACK) != 0)
 		{
-			forward -= flSpeed;
+			forward -= (pmove->angles[0] >= 0 && !onFloor) ? climbingUpSpeed : flSpeed;
 		}
 		if ((pmove->cmd.buttons & IN_FORWARD) != 0)
 		{
-			forward += flSpeed;
+			forward += (pmove->angles[0] < 0 && !onFloor) ? climbingUpSpeed : flSpeed;
 		}
 		if ((pmove->cmd.buttons & IN_MOVELEFT) != 0)
 		{

@@ -993,6 +993,8 @@ void InitInput()
 	sv_bunnyhop_cap = gEngfuncs.pfnRegisterVariable("sv_bunnyhop_cap", "1", FCVAR_SERVER | FCVAR_ARCHIVE);
     gEngfuncs.pfnRegisterVariable( "cl_showmap", "1", FCVAR_SERVER | FCVAR_ARCHIVE );
     gEngfuncs.pfnRegisterVariable( "cl_ladderbob", "7", FCVAR_ARCHIVE );
+    gEngfuncs.pfnRegisterVariable( "cl_ladderbob_frequency", "22", FCVAR_ARCHIVE );
+    gEngfuncs.pfnRegisterVariable( "sv_ladder_climb_speed", "100", FCVAR_SERVER | FCVAR_ARCHIVE );
 
 
 	// Initialize third person camera controls.

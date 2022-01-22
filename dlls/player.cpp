@@ -1762,43 +1762,49 @@ void CBasePlayer::AlphaLadderBob(float bobAmount)
 		return;
 	}
 
-	m_iAlphaLadderFrame++;
-	if (m_iAlphaLadderFrame >= CLIMB_SHAKE_FREQUENCY)
+	auto velZ = pev->velocity.z;
+	if (velZ > 10)
 	{
-		m_iAlphaLadderFrame = 0.0;
-		m_iAlphaLadderSpeed = MAX_CLIMB_SPEED;
-
-		int randomSound = RANDOM_LONG(0, 3);
-
-		switch (randomSound)
+		m_iAlphaLadderFrame++;
+		if (m_iAlphaLadderFrame >= CVAR_GET_FLOAT("cl_ladderbob_frequency"))
 		{
-		case 0:
-			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob1.wav", VOL_NORM, ATTN_NORM);
-			break;
-		case 1:
-			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob2.wav", VOL_NORM, ATTN_NORM);
-			break;
-		case 2:
-			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob3.wav", VOL_NORM, ATTN_NORM);
-			break;
-		case 3:
-		default:
-			EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob4.wav", VOL_NORM, ATTN_NORM);
-			break;
-		}
+			m_iAlphaLadderFrame = 0.0;
 
-		if (m_bAlphaLadderPunchSwap)
-		{
-			pev->punchangle.z = bobAmount;
-			pev->punchangle.x = -bobAmount;
-			m_bAlphaLadderPunchSwap = 0;
+			int randomSound = RANDOM_LONG(0, 3);
+
+			switch (randomSound)
+			{
+			case 0:
+				EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob1.wav", VOL_NORM, ATTN_NORM);
+				break;
+			case 1:
+				EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob2.wav", VOL_NORM, ATTN_NORM);
+				break;
+			case 2:
+				EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob3.wav", VOL_NORM, ATTN_NORM);
+				break;
+			case 3:
+			default:
+				EMIT_SOUND(edict(), CHAN_VOICE, "player/pl_ladder_bob4.wav", VOL_NORM, ATTN_NORM);
+				break;
+			}
+
+			if (m_bAlphaLadderPunchSwap)
+			{
+				pev->punchangle.z = bobAmount;
+				pev->punchangle.x = -bobAmount;
+				m_bAlphaLadderPunchSwap = 0;
+			}
+			else
+			{
+				pev->punchangle.z = -bobAmount;
+				pev->punchangle.x = bobAmount;
+				m_bAlphaLadderPunchSwap = 1;
+			}
 		}
-		else
-		{
-			pev->punchangle.z = -bobAmount;
-			pev->punchangle.x = bobAmount;
-			m_bAlphaLadderPunchSwap = 1;
-		}
+	}
+	else if (velZ < 0)
+	{
 	}
 }
 
@@ -2922,7 +2928,6 @@ void CBasePlayer::Spawn()
 	m_flNextChatTime = gpGlobals->time;
 
 	m_iAlphaLadderFrame = 0;
-	m_iAlphaLadderSpeed = 0.0f;
 	m_bAlphaLadderPunchSwap = 0;
 
 	secretScientistSpawned = 0;
